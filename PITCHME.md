@@ -304,6 +304,12 @@ Note:
 
 ## Chart viewer / editor
 
+![](assets/all-of-me-g.png)
+
++++
+
+## Chart viewer / editor
+
 # Demo
 
 Note:
@@ -333,12 +339,6 @@ type alias BarReference =
     , barIndex : BarIndex
     }
 ```
-
-+++
-
-## Chart viewer / editor
-
-![](assets/all-of-me-g.png)
 
 ---
 
@@ -395,7 +395,7 @@ Note:
 
 # Conclusion
 
-- Elm and ADTs is awesome to model a domain like music
+- Elm is awesome to model a domain like music
 - Refactoring is a real pleasure
 - Just the beginning!
 - Questions?
