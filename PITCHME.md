@@ -63,30 +63,17 @@ We just keep the "letters"
 
 Means "C Major"
 
-+++
-
-## Another one
-
 <span style="font-size: 3em;">Fm</span>
 
 Means "F minor"
 
 ---
 
-## What is a chord?
-
-- a "root" music note
-  - A, B, C, D, E, F, G
-- a quality
-  - Major, minor, etc.
-
-+++
-
 ## Music notes in Elm
 
 ```elm
 type Note
-    = A | Af | As
+    = A | Af | As -- f = "flat", s = "sharp"
     | B | Bf | Bs
     | C | Cf | Cs
     ...
@@ -110,8 +97,8 @@ Note:
 ## Chords in Elm
 
 ```elm
-type Chord
-    = Chord Note Quality
+type alias Chord =
+    ( Note, Quality )
 
 type Quality
     = Major
@@ -121,6 +108,9 @@ type Quality
     | MinorSixth
     | Seventh
     ...
+
+fMajor : Chord
+fMajor = ( F, Major )
 ```
 
 Note:
@@ -150,26 +140,26 @@ type Part
 
 +++
 
-## Bars examples
+## Bars in Elm
 
 ![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/chords/major-triad.png)
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-repeat-1-chord.png)
 ![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-2-chords.png)
 ![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-3-chords.png)
 ![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-4-chords.png)
 
-Note:
-- I set a limit of 4 chords by bar
-
-+++
-
-## Bars in Elm
+![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-repeat-1-chord.png)
 
 ```elm
 type Bar
     = Bar (List Chord)
     | BarRepeat
+
+bar1 : Bar
+bar1 = Bar [ ( F, Major ) ]
 ```
+
+Note:
+- I set a limit of 4 chords by bar
 
 +++
 
@@ -196,31 +186,6 @@ Note:
 
 +++
 
-## Map a function on part bars
-
-```elm
--- reminder
-type Part
-    = Part String (List Bar)
-    | PartRepeat String
-
-mapPartBars : (List Bar -> List Bar) -> Part -> Part
-mapPartBars f part =
-    case part of
-        Part partName bars ->
-            Part partName (f bars)
-
-        PartRepeat _ ->
-            part
-```
-
-Note:
-- I assume you already see what's the `List.map` function is
-- Here we abstract a pattern, applying a function over the bars of a part
-  - only if it's a normal part, not a repeated part
-
-+++
-
 ## Transpose a part
 
 ```elm
@@ -240,8 +205,8 @@ transposeBar interval bar =
 ```elm
 -- Music.Chord
 transpose : Interval -> Chord -> Chord
-transpose interval (Chord note quality) =
-    Chord (Note.transpose interval note) quality
+transpose interval ( note, quality ) =
+    ( Note.transpose interval note, quality )
 
 -- Music.Note
 transpose : Interval -> Note -> Note
@@ -266,7 +231,7 @@ allOfMe : Chart
 allOfMe =
     let
         partA = Part "A"
-            [ Bar [ Chord C Major ]
+            [ Bar [ ( C, Major ) ]
             , BarRepeat
             ...
             ]
@@ -321,28 +286,9 @@ Note:
   - click on save
   - change the key
 
-+++
-
-## Chart viewer / editor
-
-```elm
-type Msg
-    = Edit
-    | Save
-    | SelectBar BarReference
-    | SetChord BarReference ChordIndex Chord
-    | SetBarRepeat BarReference Bool
-    | SetViewKey Note
-
-type alias BarReference =
-    { partIndex : PartIndex
-    , barIndex : BarIndex
-    }
-```
-
 ---
 
-## A Domain Specific Language
+## A text format
 
 ```
 title: All of me
@@ -364,6 +310,22 @@ Note:
 - started as an experiment
 - human-friendly serialization
 - people can share a chords chart by email in plain text
+
++++
+
+## Bars examples
+
+![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/chords/major-triad.png)
+
+# C
+
+![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-repeat-1-chord.png)
+
+# TODO
+
+![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-2-chords.png)
+![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-3-chords.png)
+![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-4-chords.png)
 
 +++
 
