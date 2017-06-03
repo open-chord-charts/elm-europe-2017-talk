@@ -23,13 +23,21 @@ Note:
 
 ## Chords charts?
 
-- `song = melody + chords + tonality`
+- `song = melody + chords` in a tonality
 - applies to rock, blues, jazz, folk
 - transposing is changing tonality
 
 Note:
 - when I want to play a song, besides the melody, I need chords
   - rock, blues, jazz, folk – same principle!
+
++++
+
+## Already seen that?
+
+![Guitar chords](assets/guitar-chords.jpg)
+
+We'll just keep the "letters"
 
 +++
 
@@ -46,14 +54,6 @@ Note:
 - does not include the melody
 - I'd like the transpose feature: change the tonality dynamically
 - Can't to that with images or plain text
-
-+++
-
-## Already seen that?
-
-![Guitar chords](assets/guitar-chords.jpg)
-
-We'll just keep the "letters"
 
 +++
 
