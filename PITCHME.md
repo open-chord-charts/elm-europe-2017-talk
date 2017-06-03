@@ -387,12 +387,6 @@ E7 - Am - D7 - G7 -
 F Fm C A7 Dø G7 C -
 ```
 
-@[1-2](Metadata)
-@[4](Part name)
-@[5](Chords of part A)
-@[7-8](Part B)
-@[10](Repeated part)
-
 +++
 
 ### Chart value to string
