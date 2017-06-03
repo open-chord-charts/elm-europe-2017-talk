@@ -359,7 +359,8 @@ Note:
 
 - Elm is awesome to model a domain like music
 - Refactoring is a real pleasure
-- Just the beginning!
+- Work still in progress
+- https://open-chords-charts.github.io/chart-editor/
 - Questions?
 
 Note:
