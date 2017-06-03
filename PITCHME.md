@@ -73,7 +73,7 @@ Means "F minor"
 
 - recompute chords to change tonality of song
 - difficult to achieve while playing
-- $$transpose(C, 1) \to D$$
+- `$$transpose(C, 1) \to D$$`
 
 ---
 
@@ -182,7 +182,7 @@ bar1 = Bar [ ( A, Minor ), ( D, Seventh ) ]
 
 ## Transpose a chords chart
 
-- $$interval(chart key, new key)$$
+- `$$interval(chart key, new key)$$`
 - apply it to the parts
 
 +++
