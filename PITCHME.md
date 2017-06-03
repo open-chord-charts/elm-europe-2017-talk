@@ -6,7 +6,7 @@ I'm Christophe Benz
 
 developer and jazz pianist
 
-contact@cbenz.org
+christophe.benz@jailbreak.paris
 
 ---
 
@@ -30,10 +30,6 @@ Note:
 Note:
 - when I want to play a song, besides the melody, I need chords
   - rock, blues, jazz, folk – same principle!
-- I'd like to have a repertoire of songs
-  - with transpose feature: change the tonality dynamically
-- Can't to that with images or plain text
-- I didn't find any free software doing this, and not in Elm ;-)
 
 +++
 
@@ -48,16 +44,20 @@ Note:
 - keeping only chords
 - presented as a table
 - does not include the melody
+- I'd like the transpose feature: change the tonality dynamically
+- Can't to that with images or plain text
 
 +++
+
+## Already seen that?
 
 ![Guitar chords](assets/guitar-chords.jpg)
 
-We just keep the "letters"
+We'll just keep the "letters"
 
 +++
 
-## Focus on the first chord
+## Chords
 
 <span style="font-size: 3em;">C</span>
 
@@ -66,6 +66,14 @@ Means "C Major"
 <span style="font-size: 3em;">Fm</span>
 
 Means "F minor"
+
++++
+
+# Transposition
+
+- recompute chords to change tonality of song
+- difficult to achieve while playing
+- $$transpose(C, 1) \to D$$
 
 ---
 
@@ -108,9 +116,11 @@ type Quality
     | MinorSixth
     | Seventh
     ...
+```
 
-fMajor : Chord
-fMajor = ( F, Major )
+```elm
+fMinor : Chord
+fMinor = ( F, Minor )
 ```
 
 Note:
@@ -153,13 +163,27 @@ type Part
 type Bar
     = Bar (List Chord)
     | BarRepeat
-
-bar1 : Bar
-bar1 = Bar [ ( F, Major ) ]
 ```
 
 Note:
 - I set a limit of 4 chords by bar
+
++++
+
+## Bars in Elm
+
+![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-2-chords.png)
+
+bar1 : Bar
+bar1 = Bar [ ( A, Minor ), ( D, Seventh ) ]
+```
+
++++
+
+## Transpose a chords chart
+
+- $$interval(chart key, new key)$$
+- apply it to the parts
 
 +++
 
@@ -186,7 +210,9 @@ Note:
 
 +++
 
-## Transpose a part
+## Transpose a chords chart
+
+note ∈ chord ∈ bar ∈ part ∈ chart
 
 ```elm
 transposePart : Interval -> Part -> Part
@@ -196,13 +222,7 @@ transposePart interval part =
 transposeBar : Interval -> Bar -> Bar
 transposeBar interval bar =
     bar |> mapBarChords (List.map (Chord.transpose interval))
-```
 
-+++
-
-## Transpose a chord
-
-```elm
 -- Music.Chord
 transpose : Interval -> Chord -> Chord
 transpose interval ( note, quality ) =
@@ -217,6 +237,11 @@ transpose interval note =
     in
         fromOctaveIndex (octaveIndex + interval)
 ```
+
+@[1-3](Transose a part)
+@[5-7](Transose a bar)
+@[9-12](Transose a chord)
+@[14-21](Transose a note)
 
 ---
 
@@ -238,10 +263,15 @@ allOfMe =
         partB = ...
         partC = ...
     in
-        { title = "All of me", key = C
+        { title = "All of me"
+        , key = C
         , parts = [ partA, partB, PartRepeat "A", partC ]
         }
 ```
+
+@[1-2]
+@[3-10]
+@[11-15]
 
 +++
 
@@ -261,6 +291,9 @@ view model =
     in
         ...
 ```
+
+@[1-4]
+@[6-12]
 
 Note:
 - viewed key is different from chart key
@@ -290,6 +323,51 @@ Note:
 
 ## A text format
 
+![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/chords/major-triad.png)
+
+<span style="font-size: 3em;">C</span>
+
+Note:
+- started as an experiment
+- human-friendly serialization
+- people can share a chords chart by email in plain text
+
++++
+
+## A text format
+
+![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-repeat-1-chord.png)
+
+<span style="font-size: 3em;">–</span>
+
++++
+
+## A text format
+
+![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-2-chords.png)
+
+<span style="font-size: 3em;">Dm/A7</span>
+
++++
+
+## A text format
+
+![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-3-chords.png)
+
+<span style="font-size: 3em;">Gm/Eb7/D7</span>
+
++++
+
+## A text format
+
+![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-4-chords.png)
+
+<span style="font-size: 3em;">Ab/C7/Fm/Eb6</span>
+
++++
+
+## A text format
+
 ```
 title: All of me
 key: C
@@ -306,26 +384,11 @@ E7 - Am - D7 - G7 -
 F Fm C A7 Dø G7 C -
 ```
 
-Note:
-- started as an experiment
-- human-friendly serialization
-- people can share a chords chart by email in plain text
-
-+++
-
-## Bars examples
-
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/chords/major-triad.png)
-
-# C
-
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-repeat-1-chord.png)
-
-# TODO
-
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-2-chords.png)
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-3-chords.png)
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-4-chords.png)
+@[1-2](Metadata)
+@[4](Part name)
+@[5](Chords of part A)
+@[7-8](Part B)
+@[10](Repeated part)
 
 +++
 
