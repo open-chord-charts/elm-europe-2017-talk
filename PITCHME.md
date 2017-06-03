@@ -73,7 +73,8 @@ Means "F minor"
 
 - recompute chords to change tonality of song
 - difficult to achieve while playing
-- `$$transpose(C, 1) \to D$$`
+
+`$$transpose(C, 1) \to D$$`
 
 ---
 
@@ -174,6 +175,7 @@ Note:
 
 ![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-2-chords.png)
 
+```elm
 bar1 : Bar
 bar1 = Bar [ ( A, Minor ), ( D, Seventh ) ]
 ```
@@ -182,8 +184,9 @@ bar1 = Bar [ ( A, Minor ), ( D, Seventh ) ]
 
 ## Transpose a chords chart
 
-- `$$interval(chart key, new key)$$`
-- apply it to the parts
+`$$interval(chart key, new key)$$`
+
+Then apply the interval to the parts.
 
 +++
 
@@ -325,7 +328,7 @@ Note:
 
 ![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/chords/major-triad.png)
 
-<span style="font-size: 3em;">C</span>
+<span style="font-size: 3em;">`C`</span>
 
 Note:
 - started as an experiment
@@ -338,7 +341,7 @@ Note:
 
 ![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-repeat-1-chord.png)
 
-<span style="font-size: 3em;">–</span>
+<span style="font-size: 3em;">`–`</span>
 
 +++
 
@@ -346,7 +349,7 @@ Note:
 
 ![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-2-chords.png)
 
-<span style="font-size: 3em;">Dm/A7</span>
+<span style="font-size: 3em;">`Dm/A7`</span>
 
 +++
 
@@ -354,7 +357,7 @@ Note:
 
 ![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-3-chords.png)
 
-<span style="font-size: 3em;">Gm/Eb7/D7</span>
+<span style="font-size: 3em;">`Gm/Eb7/D7`</span>
 
 +++
 
@@ -362,7 +365,7 @@ Note:
 
 ![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-4-chords.png)
 
-<span style="font-size: 3em;">Ab/C7/Fm/Eb6</span>
+<span style="font-size: 3em;">`Ab/C7/Fm/Eb6`</span>
 
 +++
 
