@@ -395,24 +395,44 @@ F Fm C A7 Dø G7 C -
 
 +++
 
-### elm-tools/parser
+### Chart value to string
+
+Using pattern matching
+
+```elm
+barToString : Bar -> String
+barToString bar =
+    case bar of
+        Bar chords ->
+            chords
+                |> List.map Chord.toString
+                |> String.join "/"
+
+        BarRepeat ->
+            "-"
+```
+
++++
+
+### String to Chart value
+
+Using elm-tools/parser
 
 ```elm
 chart : Parser Chart
 chart =
-    inContext "chart" <|
-        succeed Chart
-            |. spacesAndNewlines
-            |. symbol "title:"
-            |. spaces
-            |= keepUntilEndOfLine
-            |. newLine
-            |. symbol "key:"
-            |. spaces
-            |= note
-            |. spacesAndNewlines
-            |= repeat oneOrMore (part |. spacesAndNewlines)
-            |. end
+    succeed Chart
+        |. spacesAndNewlines
+        |. symbol "title:"
+        |. spaces
+        |= keepUntilEndOfLine
+        |. newLine
+        |. symbol "key:"
+        |. spaces
+        |= note
+        |. spacesAndNewlines
+        |= repeat oneOrMore (part |. spacesAndNewlines)
+        |. end
 ```
 
 Note:
