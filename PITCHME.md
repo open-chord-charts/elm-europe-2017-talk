@@ -2,11 +2,17 @@
 
 ![](assets/logo.png)
 
-I'm Christophe Benz
+Christophe Benz
 
 developer and jazz pianist
 
 christophe.benz@jailbreak.paris
+
+Note:
+- Hello everyone, I'm Christophe Benz
+- Happy and grateful to be here
+- developer who loves Elm, adopted it 1 year ago, professionnally and personnally
+- if you don't understand now what's a chord it's completely normal, I'll explain
 
 ---
 
@@ -15,9 +21,9 @@ Jam session!
 ![](assets/cbenz-piano.jpg)
 
 Note:
-- I'm also a pianist who loves Jazz and improvised music
-- Happy and grateful to be here
-- I will talk about music and Elm for 20 minutes
+- pianist who loves playing in Jam Sessions
+- need a memo if don't remember everything in a song
+- I started the Open Chords Charts project: a free database of songs, just chords
 
 ---
 
@@ -28,6 +34,8 @@ Note:
 
 Note:
 - when I want to play a song, besides the melody, I need chords
+- chords are the skeleton of the song
+- chords tell us the color of the song at any point of time
 
 +++
 
@@ -43,15 +51,11 @@ Just keep the *letters*
 
 ![All of me](assets/all-of-me.png)
 
-It's an image :-(
-
 Note:
-- it's a convenient way to represent a song
-- keeping only chords
 - presented as a table
-- does not include the melody
-- I'd like the transpose feature: change the tonality dynamically
-- Can't to that with images or plain text
+- different from a score
+- key is the most important note of the song
+- a basic rule for musicians telling what notes to play and when
 
 +++
 
@@ -61,15 +65,19 @@ Note:
 
 ![All of me](assets/all-of-me-interrogation-points.png)
 
+Note:
+- a singer or a guitarist may ask to play in another key
+- difficult to achieve while playing
+
 +++
 
 ## Chords
 
-<span style="font-size: 3em;">C</span>
+<span style="font-size: 3em;">`C`</span>
 
 Means "C Major"
 
-<span style="font-size: 3em;">Fm</span>
+<span style="font-size: 3em;">`Fm`</span>
 
 Means "F minor"
 
@@ -77,8 +85,7 @@ Means "F minor"
 
 # Transposition
 
-- recompute chords to change tonality of song
-- difficult to achieve while playing
+- recompute chords to change key of song
 
 `$$transpose(C, 1) \to D$$`
 
@@ -100,18 +107,12 @@ type Note
     ...
     | F | Ff | Fs
     | G | Gf | Gs
-
-type alias OctaveIndex = Int
-
-toOctaveIndex : Note -> OctaveIndex
-
-toOctaveIndex Es == toOctaveIndex Ff -- enharmonics
 ```
 
+TODO image flat and sharp
+
 Note:
-- first using Int but doesn't allow enharmonics
-- then using ADT
-- refactoring was secured by the Elm compiler
+- a note (A, B, C, etc.) can be either normal, flat or sharp
 
 +++
 
@@ -131,34 +132,18 @@ type Quality
     ...
 ```
 
-```elm
-fMinor : Chord
-fMinor = ( F, Minor )
-```
-
 Note:
 - qualities are just labels corresponding to commonly used chords
 
 +++
 
-## Chords Charts in Elm
+## Chords in Elm
 
-![All of me](assets/all-of-me.png)
-
-+++
-
-## Chords Charts in Elm
+<span style="font-size: 3em;">Fm</span>
 
 ```elm
-type alias Chart =
-    { title : String
-    , tonality : Note
-    , parts : List Part
-    }
-
-type Part
-    = Part String (List Bar)
-    | PartRepeat String
+fMinor : Chord
+fMinor = ( F, Minor )
 ```
 
 +++
@@ -189,16 +174,107 @@ Note:
 
 ```elm
 bar1 : Bar
-bar1 = Bar [ ( A, Minor ), ( D, Seventh ) ]
+bar1 = Bar [ ( A, MinorSeventh ), ( D, Seventh ) ]
 ```
 
 +++
 
+## Parts in Elm
+
+TODO image of part or part repeat
+
+```elm
+type Part
+    = Part String (List Bar)
+    | PartRepeat String
+```
+
++++
+
+## Parts in Elm
+
+```elm
+part1 : Part
+part1 = Part "A" [ Bar [ ( C, Major ) ] , BarRepeat ]
+```
+
++++
+
+## Chords Charts in Elm
+
+TODO image of chart
+
+```elm
+type alias Chart =
+    { title : String
+    , key : Note
+    , parts : List Part
+    }
+```
+
++++
+
+## Chart viewer / editor
+
+```elm
+view : Chart -> Html msg
+```
+
+![](assets/all-of-me-c.png)
+
+---
+
 ## Transpose a chords chart
 
-`$$interval(chart key, new key)$$`
+`$$interval(originalKey, newKey)$$`
 
-Then apply the interval to the parts.
+- Apply an interval to every nested:
+    - chart ∋ part ∋ bar ∋ chord ∋ note
+
+Note:
+- Transposition is a translation
+
++++
+
+## Find the index of a note
+
+```elm
+interval : Note -> Note -> Int
+interval note1 note2 =
+    (toIndex note2 - toIndex note1) % 12
+
+toIndex : Note -> Int
+
+toIndex C = 3
+toIndex G = 10
+
+interval C G = 10 - 3 = 7
+```
+
+## Transpose a chords chart
+
+```elm
+transposeNote : Interval -> Note -> Note
+transposeNote interval note =
+    fromIndex ((toIndex note) + interval)
+
+transposeChord : Interval -> Chord -> Chord
+transposeChord interval ( note, quality ) =
+    ( transposeNote interval note, quality )
+
+transposeBar : Interval -> Bar -> Bar
+transposeBar interval bar =
+    bar |> mapBarChords (transposeChord interval)
+
+transposePart : Interval -> Part -> Part
+transposePart interval part =
+    part |> mapPartBars (transposeBar interval)
+```
+
+@[1-3]
+@[5-7]
+@[9-12]
+@[14-21]
 
 +++
 
@@ -223,48 +299,32 @@ transpose key chart =
 Note:
 - transposing a chords chart is basically transposing its parts, and setting the new key
 
-+++
-
-## Transpose a chords chart
-
-note ∈ chord ∈ bar ∈ part ∈ chart
-
-```elm
-transposePart : Interval -> Part -> Part
-transposePart interval part =
-    part |> mapPartBars (List.map (transposeBar interval))
-
-transposeBar : Interval -> Bar -> Bar
-transposeBar interval bar =
-    bar |> mapBarChords (List.map (Chord.transpose interval))
-
--- Music.Chord
-transpose : Interval -> Chord -> Chord
-transpose interval ( note, quality ) =
-    ( Note.transpose interval note, quality )
-
--- Music.Note
-transpose : Interval -> Note -> Note
-transpose interval note =
-    let
-        octaveIndex =
-            toOctaveIndex note
-    in
-        fromOctaveIndex (octaveIndex + interval)
-```
-
-@[1-3](Transose a part)
-@[5-7](Transose a bar)
-@[9-12](Transose a chord)
-@[14-21](Transose a note)
-
 ---
 
 ## Chart viewer / editor
 
-![](assets/all-of-me-c.png)
+# Demo
+
+Note:
+- show
+  - click on edit
+  - select a bar
+  - change a chord
+  - set a bar repeat
+  - click on save
+  - change the key
 
 +++
+
+## Chart viewer / editor
+
+![](assets/all-of-me-g.png)
+
+---
+
+## A text format
+
+In Elm: verbose!
 
 ```elm
 allOfMe : Chart
@@ -284,72 +344,23 @@ allOfMe =
         }
 ```
 
-@[1-2]
-@[3-10]
-@[11-15]
-
-+++
-
-## Chart viewer / editor
-
-```elm
-type alias Model =
-    { chart : Chart
-    , viewedKey : Note
-    }
-
-view model =
-    let
-        viewedChart =
-            model.chart
-                |> Music.Chart.transpose model.viewedKey
-    in
-        ...
-```
-
-@[1-4]
-@[6-12]
-
 Note:
-- viewed key is different from chart key
+- building a chart in Elm is verbose so I implemented a human-friendly textual representation
+- just an experiment
+- like Markdown I like to have human-readable storage format
+- people can share a chords charts in this format
 
 +++
 
-## Chart viewer / editor
-
-![](assets/all-of-me-g.png)
-
-+++
-
-## Chart viewer / editor
-
-# Demo
-
-Note:
-- show
-  - click on edit
-  - select a bar
-  - change a chord
-  - set a bar repeat
-  - click on save
-  - change the key
-
----
-
-## A text format
+## Text format design
 
 ![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/chords/major-triad.png)
 
 <span style="font-size: 3em;">`C`</span>
 
-Note:
-- started as an experiment
-- human-friendly serialization
-- people can share a chords chart by email in plain text
-
 +++
 
-## A text format
+## Text format design
 
 ![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-repeat-1-chord.png)
 
@@ -361,15 +372,7 @@ Note:
 
 ![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-2-chords.png)
 
-<span style="font-size: 3em;">`Dm/A7`</span>
-
-+++
-
-## A text format
-
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-3-chords.png)
-
-<span style="font-size: 3em;">`Gm/Eb7/D7`</span>
+<span style="font-size: 3em;">`Am7/D7`</span>
 
 +++
 
@@ -401,7 +404,7 @@ F Fm C A7 Dø G7 C -
 
 +++
 
-### Chart value to string
+### Chart to string
 
 Using pattern matching
 
@@ -418,9 +421,12 @@ barToString bar =
             "-"
 ```
 
+Note:
+- thanks to the type system I couldn't forget any case in my rendering
+
 +++
 
-### String to Chart value
+### String to Chart
 
 Using elm-tools/parser
 
@@ -442,6 +448,7 @@ chart =
 ```
 
 Note:
+- type safe parsing
 - almost same complexity than JSON decoders
 - JSON encoders still needed for a web API in order to be easily consumable by other programming languages
 
