@@ -21,15 +21,13 @@ Note:
 
 ---
 
-## Chords charts?
+## What's a song?
 
-- `song = melody + chords` in a tonality
+- `song = melody + chords`
 - applies to rock, blues, jazz, folk
-- transposing is changing tonality
 
 Note:
 - when I want to play a song, besides the melody, I need chords
-  - rock, blues, jazz, folk – same principle!
 
 +++
 
@@ -37,7 +35,7 @@ Note:
 
 ![Guitar chords](assets/guitar-chords.jpg)
 
-We'll just keep the "letters"
+Just keep the *letters*
 
 +++
 
@@ -54,6 +52,14 @@ Note:
 - does not include the melody
 - I'd like the transpose feature: change the tonality dynamically
 - Can't to that with images or plain text
+
++++
+
+## Transpose
+
+### What if we play in `G`?
+
+![All of me](assets/all-of-me-interrogation-points.png)
 
 +++
 
@@ -75,6 +81,12 @@ Means "F minor"
 - difficult to achieve while playing
 
 `$$transpose(C, 1) \to D$$`
+
+`$$transpose(Fm, 1) \to Gm$$`
+
+Note:
+- the quality of a chord does not change
+- let's focus on transposing notes
 
 ---
 
