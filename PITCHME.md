@@ -1,4 +1,4 @@
-## Open Chords Charts
+## Music Chords Charts in Elm
 
 ![](assets/logo.png)
 
@@ -12,6 +12,8 @@ Note:
 - Hello everyone, I'm Christophe Benz
 - Happy and grateful to be here
 - developer who loves Elm, adopted it 1 year ago, professionnally and personnally
+- I'm gonna talk about music and Elm, especially about chords charts
+- chords charts tell musicians what notes to play and when
 - if you don't understand now what's a chord it's completely normal, I'll explain
 
 ---
@@ -23,7 +25,7 @@ Jam session!
 Note:
 - pianist who loves playing in Jam Sessions
 - need a memo if don't remember everything in a song
-- I started the Open Chords Charts project: a free database of songs, just chords
+- because I'm also a developer, I started the Open Chords Charts project: a free database of songs
 
 ---
 
@@ -34,6 +36,7 @@ Note:
 
 Note:
 - when I want to play a song, besides the melody, I need chords
+- if I accompagny a singer, I need chords only
 - chords are the skeleton of the song
 - chords tell us the color of the song at any point of time
 
@@ -45,6 +48,9 @@ Note:
 
 Just keep the *letters*
 
+Note:
+- diagrams tell guitarists how to put their fingers on the fret
+
 +++
 
 ## Example: Jazz song
@@ -55,7 +61,6 @@ Note:
 - presented as a table
 - different from a score
 - key is the most important note of the song
-- a basic rule for musicians telling what notes to play and when
 
 +++
 
