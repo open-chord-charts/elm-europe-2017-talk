@@ -174,7 +174,11 @@ Note:
 
 ```elm
 bar1 : Bar
-bar1 = Bar [ ( A, MinorSeventh ), ( D, Seventh ) ]
+bar1 =
+    Bar
+        [ ( A, MinorSeventh )
+        , ( D, Seventh )
+        ]
 ```
 
 +++
@@ -195,7 +199,11 @@ type Part
 
 ```elm
 part1 : Part
-part1 = Part "A" [ Bar [ ( C, Major ) ] , BarRepeat ]
+part1 =
+    Part "A"
+        [ Bar [ ( C, Major ) ]
+        , BarRepeat
+        ]
 ```
 
 +++
@@ -251,6 +259,8 @@ toIndex G = 10
 interval C G = 10 - 3 = 7
 ```
 
++++
+
 ## Transpose a chords chart
 
 ```elm
@@ -299,7 +309,7 @@ transpose key chart =
 Note:
 - transposing a chords chart is basically transposing its parts, and setting the new key
 
----
++++
 
 ## Chart viewer / editor
 
@@ -368,7 +378,7 @@ Note:
 
 +++
 
-## A text format
+## Text format design
 
 ![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-2-chords.png)
 
@@ -376,11 +386,16 @@ Note:
 
 +++
 
-## A text format
+## Text format design
 
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-4-chords.png)
+### A part
 
-<span style="font-size: 3em;">`Ab/C7/Fm/Eb6`</span>
+<span style="font-size: 3em;">
+```
+= A
+Ab - Fm/D7 Eb6
+```
+</span>
 
 +++
 
