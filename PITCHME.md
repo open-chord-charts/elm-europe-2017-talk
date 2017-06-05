@@ -1,12 +1,10 @@
-## Music Chords Charts in Elm
+# Music Chords Charts
+
+## in Elm
 
 ![](assets/logo.png)
 
-Christophe Benz
-
-developer and jazz pianist
-
-christophe.benz@jailbreak.paris
+Christophe Benz – christophe.benz@jailbreak.paris
 
 Note:
 - Hello everyone, I'm Christophe Benz
@@ -17,8 +15,6 @@ Note:
 - if you don't understand now what's a chord it's completely normal, I'll explain
 
 ---
-
-Jam session!
 
 ![](assets/cbenz-piano.jpg)
 
@@ -46,7 +42,7 @@ Note:
 
 ![Guitar chords](assets/guitar-chords.jpg)
 
-Just keep the *letters*
+Just keep the *names*
 
 Note:
 - diagrams tell guitarists how to put their fingers on the fret
@@ -64,18 +60,6 @@ Note:
 
 +++
 
-## Transpose
-
-### What if we play in `G`?
-
-![All of me](assets/all-of-me-interrogation-points.png)
-
-Note:
-- a singer or a guitarist may ask to play in another key
-- difficult to achieve while playing
-
-+++
-
 ## Chords
 
 <span style="font-size: 3em;">`C`</span>
@@ -88,7 +72,7 @@ Means "F minor"
 
 +++
 
-# Transposition
+## Transposition
 
 - recompute chords to change key of song
 
@@ -102,7 +86,13 @@ Note:
 
 ---
 
-## Music notes in Elm
+# `Music`
+
+# package in Elm
+
++++
+
+## `Note` type
 
 ```elm
 type Note
@@ -121,7 +111,7 @@ Note:
 
 +++
 
-## Chords in Elm
+## `Chord` type
 
 ```elm
 type alias Chord =
@@ -142,9 +132,9 @@ Note:
 
 +++
 
-## Chords in Elm
+## `Chord` value
 
-<span style="font-size: 3em;">Fm</span>
+### `Fm`
 
 ```elm
 fMinor : Chord
@@ -153,14 +143,14 @@ fMinor = ( F, Minor )
 
 +++
 
-## Bars in Elm
+## `Bar` type
 
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/chords/major-triad.png)
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-2-chords.png)
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-3-chords.png)
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-4-chords.png)
+![](assets/major-triad.png)
+![](assets/bar-2-chords.png)
+![](assets/bar-3-chords.png)
+![](assets/bar-4-chords.png)
 
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-repeat-1-chord.png)
+![](assets/bar-repeat-1-chord.png)
 
 ```elm
 type Bar
@@ -173,9 +163,9 @@ Note:
 
 +++
 
-## Bars in Elm
+## `Bar` value
 
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-2-chords.png)
+![](assets/bar-2-chords.png)
 
 ```elm
 bar1 : Bar
@@ -188,9 +178,11 @@ bar1 =
 
 +++
 
-## Parts in Elm
+## `Part` type
 
-TODO image of part or part repeat
+![](assets/part.png)
+
+![](assets/part-repeat.png)
 
 ```elm
 type Part
@@ -200,22 +192,30 @@ type Part
 
 +++
 
-## Parts in Elm
+## `Part` value
+
+![](assets/part.png)
 
 ```elm
-part1 : Part
-part1 =
+partA : Part
+partA =
     Part "A"
         [ Bar [ ( C, Major ) ]
+        , BarRepeat
+        , Bar [ ( E, Seventh ) ]
+        , BarRepeat
+        , Bar [ ( A, Seventh ) ]
+        , BarRepeat
+        , Bar [ ( D, Minor ) ]
         , BarRepeat
         ]
 ```
 
 +++
 
-## Chords Charts in Elm
+## `Chart` type
 
-TODO image of chart
+### Top-level type
 
 ```elm
 type alias Chart =
@@ -227,21 +227,31 @@ type alias Chart =
 
 +++
 
-## Chart viewer / editor
+## View a `Chart`
 
 ```elm
 view : Chart -> Html msg
 ```
 
-![](assets/all-of-me-c.png)
+![](assets/all-of-me-c-no-select.png)
 
 ---
 
-## Transpose a chords chart
+# Let's play in `G`!
+
+![All of me](assets/all-of-me-question-marks.png)
+
+Note:
+- a singer or a guitarist may ask to play in another key
+- difficult to achieve while playing
+
++++
+
+# Transpose a `Chart`
 
 `$$interval(originalKey, newKey)$$`
 
-- Apply an interval to every nested:
+- Apply an interval to nested chain:
     - chart ∋ part ∋ bar ∋ chord ∋ note
 
 Note:
@@ -249,7 +259,7 @@ Note:
 
 +++
 
-## Find the index of a note
+## Intervals
 
 ```elm
 interval : Note -> Note -> Int
@@ -369,7 +379,7 @@ Note:
 
 ## Text format design
 
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/chords/major-triad.png)
+![](assets/major-triad.png)
 
 <span style="font-size: 3em;">`C`</span>
 
@@ -377,7 +387,7 @@ Note:
 
 ## Text format design
 
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-repeat-1-chord.png)
+![](assets/bar-repeat-1-chord.png)
 
 <span style="font-size: 3em;">`–`</span>
 
@@ -385,7 +395,7 @@ Note:
 
 ## Text format design
 
-![](https://raw.githubusercontent.com/open-chords-charts/chart-dsl/master/grammar-images/bar-2-chords.png)
+![](assets/bar-2-chords.png)
 
 <span style="font-size: 3em;">`Am7/D7`</span>
 

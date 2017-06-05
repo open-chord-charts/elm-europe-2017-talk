@@ -1,4 +1,4 @@
 theme: beige
 theme-override : assets/css/PITCHME.css
-highlight: solarized-light
+highlight: vs
 mathjax : TeX-AMS_HTML-full
