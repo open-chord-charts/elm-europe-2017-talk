@@ -42,8 +42,6 @@ Note:
 
 ![Guitar chords](assets/guitar-chords.jpg)
 
-Just keep the *names*
-
 Note:
 - diagrams tell guitarists how to put their fingers on the fret
 
@@ -51,7 +49,7 @@ Note:
 
 ## Example: Jazz song
 
-![All of me](assets/all-of-me.png)
+![All of me](assets/all-of-me-explained.png)
 
 Note:
 - presented as a table
@@ -60,29 +58,45 @@ Note:
 
 +++
 
-## Chords
+## Not a music score
 
-<span style="font-size: 3em;">`C`</span>
-
-Means "C Major"
-
-<span style="font-size: 3em;">`Fm`</span>
-
-Means "F minor"
+![](assets/not-a-score.png)
 
 +++
 
-## Transposition
+## Chords
 
-- recompute chords to change key of song
+- a note and a quality
 
-`$$transpose(C, 1) \to D$$`
+- ## `C`
+    means "C Major"
+- ## `Fm`
+    means "F minor"
 
-`$$transpose(Fm, 1) \to Gm$$`
++++
+
+## Bars
+
+![](assets/metronome.jpg)
+
+- 1 bar = 4 beats
+- 1 to 4 chords per bar
+
+![](assets/major-triad.png)
+![](assets/bar-2-chords.png)
+![](assets/bar-3-chords.png)
+![](assets/bar-4-chords.png)
+
++++
+
+## Complex example
+
+![](assets/cheek-to-cheek.png)
 
 Note:
-- the quality of a chord does not change
-- let's focus on transposing notes
+- specific rendering for each chord quality
+- extra metadata
+- high ratio signal-noise
 
 ---
 
@@ -92,26 +106,26 @@ Note:
 
 +++
 
-## `Note` type
+## Note type
 
 ```elm
 type Note
-    = A | Af | As -- f = "flat", s = "sharp"
-    | B | Bf | Bs
+    = A | Af | As -- f = "flat"
+    | B | Bf | Bs -- s = "sharp"
     | C | Cf | Cs
     ...
     | F | Ff | Fs
     | G | Gf | Gs
 ```
 
-TODO image flat and sharp
+![](assets/notes-a.png)
 
 Note:
 - a note (A, B, C, etc.) can be either normal, flat or sharp
 
 +++
 
-## `Chord` type
+## Chord type
 
 ```elm
 type alias Chord =
@@ -132,7 +146,7 @@ Note:
 
 +++
 
-## `Chord` value
+## Chord value
 
 ### `Fm`
 
@@ -143,7 +157,7 @@ fMinor = ( F, Minor )
 
 +++
 
-## `Bar` type
+## Bar type
 
 ![](assets/major-triad.png)
 ![](assets/bar-2-chords.png)
@@ -163,7 +177,7 @@ Note:
 
 +++
 
-## `Bar` value
+## Bar value
 
 ![](assets/bar-2-chords.png)
 
@@ -178,7 +192,7 @@ bar1 =
 
 +++
 
-## `Part` type
+## Part type
 
 ![](assets/part.png)
 
@@ -192,7 +206,7 @@ type Part
 
 +++
 
-## `Part` value
+## Part value
 
 ![](assets/part.png)
 
@@ -213,7 +227,7 @@ partA =
 
 +++
 
-## `Chart` type
+## Chart type
 
 ### Top-level type
 
@@ -227,7 +241,9 @@ type alias Chart =
 
 +++
 
-## View a `Chart`
+## View a Chart
+
+The Elm Architecture
 
 ```elm
 view : Chart -> Html msg
@@ -237,7 +253,7 @@ view : Chart -> Html msg
 
 ---
 
-# Let's play in `G`!
+# Play it in `G`!
 
 ![All of me](assets/all-of-me-question-marks.png)
 
@@ -247,78 +263,112 @@ Note:
 
 +++
 
-# Transpose a `Chart`
+## Transpose
 
-`$$interval(originalKey, newKey)$$`
+![](assets/notes-circle.png)
 
-- Apply an interval to nested chain:
-    - chart ∋ part ∋ bar ∋ chord ∋ note
+`$$transpose(C, 1) \to D$$`
+`$$transpose(G, 1) \to A$$`
 
 Note:
-- Transposition is a translation
+- transposition is a cyclical translation
+- only 12 notes whereas we had 21 values
+- the quality of a chord does not change
+- so let's focus on transposing notes
+
++++
+
+## Note indexes
+
+```elm
+toIndex : Note -> Int
+
+toIndex C = 3
+toIndex G = 10
+```
+
+```elm
+fromIndex : Int -> Note
+
+fromIndex 3 = C
+fromIndex 10 = G
+```
+
+```elm
+transposeNote : Int -> Note -> Note
+transposeNote interval note =
+    fromIndex ((toIndex note) + interval)
+```
+
+Note:
+- note indexes are arbitrary
+
++++
+
+## Nested pieces
+
+- recompute chords
+- chart → part → bar → chord → note
+
+Note:
+- transposing a chart is applying the interval to every pieces at each nesting level
+
++++
+
+## Rewire bottom-up
+
+```elm
+transposeChord : Int -> Chord -> Chord
+transposeChord interval ( note, quality ) =
+    ( transposeNote interval note, quality )
+
+transposeBar : Int -> Bar -> Bar
+transposeBar interval bar =
+    mapBarChords (transposeChord interval) bar
+
+transposePart : Int -> Part -> Part
+transposePart interval part =
+    mapPartBars (transposeBar interval) part
+```
 
 +++
 
 ## Intervals
 
+`$$interval(chartKey, newKey)$$`
+
 ```elm
 interval : Note -> Note -> Int
 interval note1 note2 =
     (toIndex note2 - toIndex note1) % 12
+```
 
-toIndex : Note -> Int
-
+```elm
 toIndex C = 3
 toIndex G = 10
 
-interval C G = 10 - 3 = 7
+interval C G = 7
 ```
+
+Note:
+- there's still a missing info: how to compute the interval
 
 +++
 
-## Transpose a chords chart
-
-```elm
-transposeNote : Interval -> Note -> Note
-transposeNote interval note =
-    fromIndex ((toIndex note) + interval)
-
-transposeChord : Interval -> Chord -> Chord
-transposeChord interval ( note, quality ) =
-    ( transposeNote interval note, quality )
-
-transposeBar : Interval -> Bar -> Bar
-transposeBar interval bar =
-    bar |> mapBarChords (transposeChord interval)
-
-transposePart : Interval -> Part -> Part
-transposePart interval part =
-    part |> mapPartBars (transposeBar interval)
-```
-
-@[1-3]
-@[5-7]
-@[9-12]
-@[14-21]
-
-+++
-
-## Transpose a chords chart
+## Top-level
 
 ```elm
 transpose : Note -> Chart -> Chart
-transpose key chart =
+transpose newKey chart =
     let
         interval =
-            Note.interval chart.key key
+            Note.interval chart.key newKey
 
         newParts =
-            chart.parts |> List.map (transposePart interval)
+            chart.parts
+                |> List.map (transposePart interval)
     in
-        { chart
-            | key = key
-            , parts = newParts
-        }
+        { chart | key = newKey, parts = newParts }
 ```
 
 Note:
@@ -332,6 +382,7 @@ Note:
 
 Note:
 - show
+  - transpose in G
   - click on edit
   - select a bar
   - change a chord
@@ -377,46 +428,46 @@ Note:
 
 +++
 
-## Text format design
+## A chord
 
 ![](assets/major-triad.png)
 
-<span style="font-size: 3em;">`C`</span>
+## `C`
 
 +++
 
-## Text format design
+## A repeated bar
 
 ![](assets/bar-repeat-1-chord.png)
 
-<span style="font-size: 3em;">`–`</span>
+## `–`
 
 +++
 
-## Text format design
+## 2 chords in a bar
 
 ![](assets/bar-2-chords.png)
 
-<span style="font-size: 3em;">`Am7/D7`</span>
+## `Am7/D7`
 
 +++
 
-## Text format design
+## A part
 
-### A part
+![](assets/part-complex.png)
 
-<span style="font-size: 3em;">
-```
+<h2>
+<pre>
 = A
-Ab - Fm/D7 Eb6
-```
-</span>
+F - A6 - E7 - A/D7 Gm7/C7
+</pre>
+</h2>
 
 +++
 
-## A text format
+## The whole chart
 
-```
+```text
 title: All of me
 key: C
 
@@ -434,7 +485,7 @@ F Fm C A7 Dø G7 C -
 
 +++
 
-### Chart to string
+## Chart to string
 
 Using pattern matching
 
@@ -456,7 +507,7 @@ Note:
 
 +++
 
-### String to Chart
+## String to Chart
 
 Using elm-tools/parser
 
@@ -484,13 +535,11 @@ Note:
 
 ---
 
-# Conclusion
+# Thank you!
 
 - Elm is awesome to model a domain like music
-- Refactoring is a real pleasure
-- Work still in progress
+- refactoring is a real pleasure
 - https://open-chords-charts.github.io/chart-editor/
-- Questions?
 
 Note:
 - TODO

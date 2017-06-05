@@ -11,3 +11,8 @@
 .reveal h6 code {
   text-transform: none;
 }
+
+code.hljs {
+  font-size: 1.2em;
+  line-height: 1.1em;
+}
