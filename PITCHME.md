@@ -9,10 +9,9 @@ Christophe Benz – christophe.benz@jailbreak.paris
 Note:
 - Hello everyone, I'm Christophe Benz
 - Happy and grateful to be here
-- developer who loves Elm, adopted it 1 year ago, professionnally and personnally
-- I'm gonna talk about music and Elm, especially about chords charts
-- chords charts tell musicians what notes to play and when
-- if you don't understand now what's a chord it's completely normal, I'll explain
+- I'm gonna talk about music in the Elm language
+- I'm a professionnal developer who loves Elm, adopted it 1 year ago, professionnally and personnally
+- I work at Jailbreak, a free software development company, which adopted Elm in December for frontend development
 
 ---
 
@@ -20,7 +19,11 @@ Note:
 
 Note:
 - pianist who loves playing in Jam Sessions
-- need a memo if don't remember everything in a song
+- difficult to find a song everybody knows
+- pianists or guitarists need a memo if don't remember everything in a song
+- chords are harmony and tell us the color of the song at any point of time
+- chords charts are a representation to tell musicians what notes to play and when, to synchronize them
+- if you don't understand now what's a chord it's completely normal, I'll explain
 - because I'm also a developer, I started the Open Chords Charts project: a free database of songs
 
 ---
@@ -33,8 +36,6 @@ Note:
 Note:
 - when I want to play a song, besides the melody, I need chords
 - if I accompagny a singer, I need chords only
-- chords are the skeleton of the song
-- chords tell us the color of the song at any point of time
 
 +++
 
@@ -399,8 +400,6 @@ Note:
 ---
 
 ## A text format
-
-In Elm: verbose!
 
 ```elm
 allOfMe : Chart
