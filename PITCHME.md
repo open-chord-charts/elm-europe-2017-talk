@@ -39,6 +39,12 @@ Note:
 
 +++
 
+## Not a music score
+
+![](assets/not-a-score.png)
+
++++
+
 ## Already seen that?
 
 ![Guitar chords](assets/guitar-chords.jpg)
@@ -56,12 +62,6 @@ Note:
 - presented as a table
 - different from a score
 - key is the most important note of the song
-
-+++
-
-## Not a music score
-
-![](assets/not-a-score.png)
 
 +++
 
