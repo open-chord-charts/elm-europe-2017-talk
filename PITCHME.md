@@ -28,6 +28,10 @@ Note:
 
 ---
 
+# Music basic knowledge
+
++++
+
 ## What's a song?
 
 - `song = melody + chords`
@@ -383,13 +387,13 @@ Note:
 
 Note:
 - show
-  - transpose in G
-  - click on edit
-  - select a bar
-  - change a chord
-  - set a bar repeat
-  - click on save
-  - change the key
+    - transpose in G
+    - click on edit
+    - select a bar
+    - change a chord
+    - set a bar repeat
+    - click on save
+    - change the key
 
 +++
 
@@ -534,6 +538,17 @@ Note:
 
 ---
 
+# In short
+
+- `Music` package in Elm
+    - from real world examples
+    - solving actual problems
+    - data types then functions
+- plain-text format
+    - from real world examples
+
+---
+
 # Thank you!
 
 - Elm is awesome to model a domain like music
@@ -542,9 +557,9 @@ Note:
 
 Note:
 - TODO
-  - web API
-  - public Single-Page Application website with authentication
-    - thanks to https://github.com/rtfeldman/elm-spa-example
-  - offline mode
-    - by downloading a snapshot of the chords charts in local storage?
-    - using Progressive Web Apps?
+    - web API
+    - public Single-Page Application website with authentication
+        - thanks to https://github.com/rtfeldman/elm-spa-example
+    - offline mode
+        - by downloading a snapshot of the chords charts in local storage?
+        - using Progressive Web Apps?
