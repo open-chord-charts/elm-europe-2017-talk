@@ -13,9 +13,8 @@ Note:
 - I'm a professionnal developer who loves Elm, adopted it 1 year ago, professionnally and personnally
 - I work at Jailbreak, a free software development company, which adopted Elm in December for frontend development
 
----
 
-![](assets/cbenz-piano.jpg)
+---?image=assets/cbenz-piano.jpg&size=auto 90%
 
 Note:
 - pianist who loves playing in Jam Sessions
