@@ -14,7 +14,7 @@ Note:
 - I work at Jailbreak, a free software development company, which adopted Elm in December for frontend development
 
 
----?image=assets/cbenz-piano.jpg
+---?image=assets/cbenz-piano.jpg&size=auto 90%
 
 Note:
 - pianist who loves playing in Jam Sessions
